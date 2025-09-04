@@ -19,14 +19,17 @@ jobs:
     # This block is required to grant the workflow permission to upload the
     # security scan results to the repository's "Security" tab.
     permissions:
-      contents: read          # Allows checkout of the code
-      security-events: write  # Allows uploading of SARIF results from CodeQL
-      actions: read           # Allows the runner to read action metadata
+      contents: read       # Allows checkout of the code
+      security-events: write # Allows uploading of SARIF results from CodeQL
+      actions: read        # Allows the runner to read action metadata
 
     steps:
       # 1. Check out the repository code so the workflow can access it.
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          # This line is crucial for the git push step later on. It allows the GitHub Actions bot to commit changes.
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # 2. Set up the correct Java version for the build environment.
       - name: Set up JDK 17
@@ -87,4 +90,21 @@ jobs:
           tags: |
             anubhav1404/user-backend:latest
             anubhav1404/user-backend:${{ github.sha }}
-
+      
+      # ADDED: This step updates the image tag in your deployment file.
+      # Assumes your file is located at 'kubernetes/deployment.yaml'.
+      - name: Update deployment manifest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          sed -i "s|image: .*|image: anubhav1404/user-backend:${{ github.sha }}|g" kubernetes/backend-deployment.yaml
+  
+      # ADDED: This step commits the updated manifest file back to your main branch.
+      # It also only runs on a push to the 'main' branch.
+      - name: Commit and push manifest changes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add kubernetes/backend-deployment.yaml
+          git diff --staged --quiet || git commit -m "CI: Update image tag to ${{ github.sha }}"
+          git push
