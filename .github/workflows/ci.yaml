@@ -68,5 +68,5 @@ jobs:
           context: .
           push: true
           tags: |
-            your-dockerhub-username/user-backend:latest
-            your-dockerhub-username/user-backend:${{ github.sha }}
+            anubhav1404/user-backend:latest
+            anubhav1404/user-backend:${{ github.sha }}
