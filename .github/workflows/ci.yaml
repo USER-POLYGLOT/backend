@@ -19,7 +19,7 @@ jobs:
     # This block is required to grant the workflow permission to upload the
     # security scan results to the repository's "Security" tab.
     permissions:
-      contents: read       # Allows checkout of the code
+      contents: write       # Allows checkout of the code
       security-events: write # Allows uploading of SARIF results from CodeQL
       actions: read        # Allows the runner to read action metadata
 
