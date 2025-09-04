@@ -1,5 +1,5 @@
 # This workflow defines a comprehensive Continuous Integration (CI) pipeline for the Java Spring Boot application.
-# It lints, scans, tests, builds a Docker image, and pushes it to Docker Hub.
+# It lints, scans, tests, builds a Docker image, and pushes it to Docker H
 
 name: CI - Spring Boot Backend
 
