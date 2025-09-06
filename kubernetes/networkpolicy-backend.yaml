@@ -11,24 +11,27 @@ spec:
   - Ingress
   - Egress
   ingress:
-  # Only frontend can send requests
   - from:
       - podSelector:
           matchLabels:
             app: frontend
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: ingress-nginx
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: ingress-nginx
     ports:
-    - protocol: TCP
-      port: 8080
+      - protocol: TCP
+        port: 8080
   egress:
-  # Backend → Postgres
   - to:
       - podSelector:
           matchLabels:
             app: postgres
     ports:
-    - protocol: TCP
-      port: 5432
-  # Backend → DNS
+      - protocol: TCP
+        port: 5432
   - to:
       - namespaceSelector:
           matchLabels:
