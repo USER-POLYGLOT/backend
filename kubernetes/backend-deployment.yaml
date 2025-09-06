@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: anubhav1404/user-backend:a829681304611b9f67f5f0030d20fb2b0313c325
+        image: anubhav1404/user-backend:ef4853b6a6cc809c1f6c8cc25cb1d710e68447f5
         ports:
         - containerPort: 8080
         env:
