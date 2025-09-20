@@ -69,6 +69,16 @@ jobs:
       # 8. Run the project's unit tests to ensure code correctness.
       - name: Run Unit Tests
         run: ./mvnw test || true
+      # Security scan
+      - name: Secret Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          scanners: 'secret'
+          format: 'table'
+          exit-code: '1'
+
 
       # 9. Log in to Docker Hub using credentials stored in GitHub Secrets.
       # This step only runs if the push is to the 'main' branch, not on pull requests.
