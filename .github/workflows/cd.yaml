@@ -25,13 +25,14 @@ jobs:
           sudo -u ubuntu kubectl apply -f kubernetes/
 
 
-      # - name: DAST (OWASP ZAP baseline)
-      #   uses: zaproxy/action-baseline@v0.12.0
-      #   with:
-      #     target: https://example.com
-      #   continue-on-error: true
 
       # Verify rollout of backend deployment
       - name: Verify rollout
         run: |
           sudo -u ubuntu kubectl rollout status deployment/backend-deployment
+
+      # - name: DAST (OWASP ZAP baseline)
+      #   uses: zaproxy/action-baseline@v0.12.0
+      #   with:
+      #     target: https://backend-service.com
+      #   continue-on-error: true
